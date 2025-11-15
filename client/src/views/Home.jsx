@@ -16,33 +16,33 @@ function Home() {
     const [search,setSearch] = useState("");
     const [error,setError] = useState("");
 
-    const loadSongs = async () => {
-        const response = await axios.get(`${API_BASE_URL}/song`);
-        setSongs(response.data.data);
+    const loadSeries = async () => {
+        const response = await axios.get(`${API_BASE_URL}/series`);
+        setSeries(response.data.data);
     };
 
     useEffect(()=> {
-        loadSongs();
+        loadSeries();
     }, []);
 
-    const searchSongs = async () => {
+    const searchSeries = async () => {
         toast.loading("Searching...",{id: "Searching" });
 
         try{
-        const response = await axios.get(`${API_BASE_URL}/song/search?q=${search}`);
+        const response = await axios.get(`${API_BASE_URL}/series/search?q=${search}`);
         toast.dismiss();
-        setSongs(response.data.data);
+        setSeries(response.data.data);
         setError("");
         } catch(error) {
             console.log(error);
             toast.dismiss();
             toast.error(error.response.data.message, {id:"error"});
-            setSongs([]);
+            setSeries([]);
             setError(error.response.data.message);
         }
     };
 
-    useEffect(()=>{searchSongs();
+    useEffect(()=>{searchSeries();
      },[search]);
 
 
@@ -51,7 +51,7 @@ function Home() {
             <div className="border border-black rounded-full my-4 w-fit mx-auto px-4 py-2">
                 <input 
                 type="text"
-                placeholder="search Song..."
+                placeholder="search Series..."
                 className="border-none w-[300px] focus:outline-none" 
                 value={search} 
                 onChange={(e)=> setSearch(e.target.value)}/>
@@ -61,11 +61,11 @@ function Home() {
             {error ? <div className="text-center text-3xl mt-4">{error}</div>:null}
 
         <div className="flex flex-wrap bg-black text-white m-5">
-            {songs.map((songObj)=>{
-            const {_id, title,image,singer,loadSongs} = songObj;
+            {songs.map((seriesObj)=>{
+            const {_id, title,image,singer,loadSongs} = seriesObj;
 
             return (
-            <SongCard 
+            <SeriesCard 
             _id={_id}
             key={_id}
             title={title}
@@ -79,7 +79,7 @@ function Home() {
        <div>
           <Toaster position="top-right"/>
            </div> 
-           <Link to="{/new}"  className="w-full bg-white text-black py-2 px-3 mt-2 rounded-md font-semibold">Add Song</Link>
+           <Link to="{/new}"  className="w-full bg-white text-black py-2 px-3 mt-2 rounded-md font-semibold">Add Series</Link>
       </div>
         
       
